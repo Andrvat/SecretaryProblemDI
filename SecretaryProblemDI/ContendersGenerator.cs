@@ -7,7 +7,7 @@ public class ContendersGenerator
 
     private readonly string _sourceFilePath;
 
-    public ContendersGenerator(string sourceFilePath)
+    public ContendersGenerator(string sourceFilePath = "data/RussianNames.txt")
     {
         _sourceFilePath = sourceFilePath ?? throw new ArgumentNullException(nameof(sourceFilePath));
         if (!File.Exists(_sourceFilePath))
@@ -18,7 +18,7 @@ public class ContendersGenerator
 
     private List<string[]> GetDataFromFile()
     {
-        var contentLines = File.ReadAllText(_sourceFilePath).Split("\r\n");
+        var contentLines = File.ReadAllText(_sourceFilePath).Split("\n");
         var csv = from line in contentLines select line.Split(CsvSeparator).ToArray();
         return csv.Skip(HeaderRowsNumber).ToList();
     }

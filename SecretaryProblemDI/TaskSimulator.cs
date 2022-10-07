@@ -6,23 +6,26 @@ public class TaskSimulator : IHostedService
 {
     private readonly IHostApplicationLifetime _applicationLifetime;
 
-    private readonly Task<Contender?> _makeChoiseTask;
+    private readonly Task _makeChoiceTask;
 
-    private TaskContext _context;
+    private readonly TaskContext _context;
 
-    public TaskSimulator(TaskContext context, IHostApplicationLifetime applicationLifetime)
+    private readonly ContendersGenerator _generator;
+
+    public TaskSimulator(ContendersGenerator generator, TaskContext context,
+        IHostApplicationLifetime applicationLifetime)
     {
         _applicationLifetime = applicationLifetime;
+        _generator = generator;
         _context = context;
-        _makeChoiseTask = new Task<Contender?>(Simulate);
+        _makeChoiceTask = new Task(Simulate);
     }
 
     public void Simulate()
     {
         try
         {
-            var contendersGenerator = new ContendersGenerator(sourceFilePath: "data/RussianNames.txt");
-            _context.Hall.InviteContenders(contendersGenerator.GetShuffledContenders());
+            _context.Hall.InviteContenders(_generator.GetShuffledContenders());
             var princessChoice = _context.Princess.MakeChoice();
             Console.WriteLine("_____");
             var princessHappiness = HappinessEstimator.EstimatePrincessHappiness(princessChoice);
@@ -33,15 +36,20 @@ public class TaskSimulator : IHostedService
             Console.WriteLine(e.Data);
             Console.WriteLine(e.Message);
         }
+        finally
+        {
+            _applicationLifetime.StopApplication();
+        }
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        _makeChoiceTask.Start();
+        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
