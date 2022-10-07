@@ -21,7 +21,7 @@ public class TaskSimulator : IHostedService
         _makeChoiceTask = new Task(Simulate);
     }
 
-    public void Simulate()
+    private void Simulate()
     {
         try
         {

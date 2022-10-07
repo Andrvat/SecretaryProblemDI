@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-
-namespace SecretaryProblemDI;
+﻿namespace SecretaryProblemDI;
 
 public static class HappinessEstimator
 {
