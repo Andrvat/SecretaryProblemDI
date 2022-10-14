@@ -24,6 +24,10 @@ public class Princess
     private void SkipForeverByFactor(Hall hall, Friend friend)
     {
         var queueCount = hall.QueueInitialCount;
+        if (queueCount == 0)
+        {
+            throw new ArgumentException("Empty contenders collection");
+        }
         for (var i = 0; i < queueCount * ContendersToSkipFactor; i++)
         {
             RememberVisitedContender(hall.GetNextContender(), friend);

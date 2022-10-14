@@ -8,9 +8,8 @@ public class ContenderGeneratorTest
     [Fact]
     public void ContendersUniqueSetTest()
     {
-        const int contendersNumber = 100;
-        var contenders = new ContendersGenerator().GetShuffledContenders();
-        Assert.Equal(contendersNumber, contenders.Count);
+        var contenders = new ContendersGenerator().GetContenders();
+        Assert.Equal(TestsHelper.ContendersNumber, contenders.Count);
 
         var contendersSet = new HashSet<RatingContender>();
         foreach (var contender in contenders)
@@ -18,6 +17,6 @@ public class ContenderGeneratorTest
             contendersSet.Add(contender);
         }
         
-        Assert.Equal(contendersNumber, contendersSet.Count);
+        Assert.Equal(TestsHelper.ContendersNumber, contendersSet.Count);
     }
 }

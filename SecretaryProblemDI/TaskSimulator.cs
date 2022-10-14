@@ -10,9 +10,11 @@ public class TaskSimulator : IHostedService
 
     private readonly TaskContext _context;
 
-    public TaskSimulator(ContendersGenerator generator, TaskContext context,
-        IHostApplicationLifetime applicationLifetime)
+    private readonly ContendersGenerator _generator;
+
+    public TaskSimulator(ContendersGenerator generator, TaskContext context, IHostApplicationLifetime applicationLifetime)
     {
+        _generator = generator;
         _applicationLifetime = applicationLifetime;
         _context = context;
         _makeChoiceTask = new Task(Simulate);
@@ -22,7 +24,7 @@ public class TaskSimulator : IHostedService
     {
         try
         {
-            _context.Hall.InviteContenders(_context.Generator.GetShuffledContenders());
+            _context.Hall.InviteContenders(_generator.GetContenders());
             var princessChoice = _context.Princess.MakeChoice();
             Console.WriteLine("_____");
             var princessHappiness = HappinessEstimator.EstimatePrincessHappiness(princessChoice);
