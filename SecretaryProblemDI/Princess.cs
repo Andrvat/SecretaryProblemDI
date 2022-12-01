@@ -18,7 +18,7 @@ public class Princess
     {
         _visitedContenders.Add(contender);
         friend.NotifyAboutContender((RatingContender)contender);
-        Console.WriteLine(contender.GetFullName());
+        //Console.WriteLine(contender.GetFullName());
     }
 
     private void SkipForeverByFactor(Hall hall, Friend friend)

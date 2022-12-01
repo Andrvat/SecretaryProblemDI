@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SecretaryProblemDI.Generators;
 
@@ -10,7 +11,7 @@ public class TaskSimulator : IHostedService
 
     private readonly Task _makeChoiceTask;
 
-    private readonly TaskContext _context;
+    private TaskContext _context;
 
     private readonly ContendersDbGenerator _generator;
 
@@ -18,9 +19,13 @@ public class TaskSimulator : IHostedService
 
     private readonly AttemptsDbConfigurator _configurator;
 
-    public TaskSimulator(AttemptsDbConfigurator configurator, CliArgumentsParser cliArguments,
+    private readonly IServiceScopeFactory _serviceScopeFactory;
+
+    public TaskSimulator(IServiceScopeFactory serviceScopeFactory, AttemptsDbConfigurator configurator,
+        CliArgumentsParser cliArguments,
         ContendersDbGenerator generator, TaskContext context, IHostApplicationLifetime applicationLifetime)
     {
+        _serviceScopeFactory = serviceScopeFactory;
         _generator = generator;
         _cliArguments = cliArguments;
         _configurator = configurator;
@@ -57,13 +62,19 @@ public class TaskSimulator : IHostedService
     private double GetAverageHappiness()
     {
         var attemptsNumber = AttemptsDbConfigurator.AttemptsNumber;
-        double averageHappiness = 0;
+        double totalHappiness = 0;
         for (var i = 0; i < attemptsNumber; ++i)
         {
-            averageHappiness += GetHappinessByAttempt();
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            {
+                _context = scope.ServiceProvider.GetService<TaskContext>() ?? throw new InvalidOperationException();
+                var happiness = GetHappinessByAttempt();
+                totalHappiness += happiness;
+                Console.WriteLine($"{i} : {happiness}");
+            }
         }
 
-        return averageHappiness / attemptsNumber;
+        return totalHappiness / attemptsNumber;
     }
 
     private double GetHappinessByAttempt()

@@ -2,9 +2,9 @@
 
 public class TaskContext
 {
-    public Princess Princess { get; }
-    public Friend Friend { get; }
-    public Hall Hall { get; }
+    public Princess Princess { get; set; }
+    public Friend Friend { get; set; }
+    public Hall Hall { get; set; }
 
     public TaskContext()
     {

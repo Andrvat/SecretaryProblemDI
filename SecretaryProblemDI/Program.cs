@@ -16,11 +16,11 @@ public static class Program
         return Host.CreateDefaultBuilder(args).ConfigureServices((_, services) =>
         {
             services.AddHostedService<TaskSimulator>();
-            services.AddSingleton<CliArgumentsParser>();
-            services.AddDbContext<AttemptsDbContext>();
-            services.AddSingleton<IGenerator, ContendersDbGenerator>();
-            services.AddScoped<IGenerator, ContendersFileGenerator>();
+            services.AddSingleton(_ => new CliArgumentsParser(args));
             services.AddScoped<AttemptsDbConfigurator>();
+            services.AddDbContext<AttemptsDbContext>();
+            services.AddScoped<ContendersFileGenerator>();
+            services.AddSingleton<ContendersDbGenerator>();
             services.AddScoped<TaskContext>();
             services.AddScoped<Princess>();
             services.AddScoped<Hall>();
