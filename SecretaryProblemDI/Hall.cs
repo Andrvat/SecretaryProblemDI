@@ -2,10 +2,10 @@
 
 public class Hall
 {
-    private readonly Queue<RatingContender> _contendersQueue = new();
+    private readonly Queue<Contender> _contendersQueue = new();
     public int QueueInitialCount { get; private set; }
 
-    public void InviteContenders(List<RatingContender> contenders)
+    public void InviteContenders(List<Contender> contenders)
     {
         foreach (var contender in contenders)
         {
@@ -15,7 +15,7 @@ public class Hall
         QueueInitialCount = _contendersQueue.Count;
     }
 
-    public RatingContender GetNextContender()
+    public Contender GetNextContender()
     {
         return _contendersQueue.Dequeue();
     }

@@ -11,7 +11,7 @@ public class ContenderGeneratorTest
         var contenders = new ContendersGenerator().GetContenders();
         Assert.Equal(TestsHelper.ContendersNumber, contenders.Count);
 
-        var contendersSet = new HashSet<RatingContender>();
+        var contendersSet = new HashSet<Contender>();
         foreach (var contender in contenders)
         {
             contendersSet.Add(contender);

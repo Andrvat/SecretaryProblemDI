@@ -9,7 +9,7 @@ public class PrincessTest
     [Fact]
     public void ChooseBestContenderTest()
     {
-        var contenders = new List<RatingContender>();
+        var contenders = new List<Contender>();
         for (var i = TestsHelper.ContendersNumber - 2; i >= 0; --i)
         {
             contenders.Add(new RatingContender("", "", "", i));
@@ -27,7 +27,7 @@ public class PrincessTest
     [Fact]
     public void NotChooseAnyContenderTest()
     {
-        var contenders = new List<RatingContender>();
+        var contenders = new List<Contender>();
         for (var i = TestsHelper.ContendersNumber - 1; i >= 0; --i)
         {
             contenders.Add(new RatingContender("", "", "", i));
@@ -42,7 +42,7 @@ public class PrincessTest
     [Fact]
     public void ExceptionWhileAskNextTest()
     {
-        var contenders = new List<RatingContender>();
+        var contenders = new List<Contender>();
         var context = new TaskContext();
         context.Hall.InviteContenders(contenders);
         Assert.Throws<ArgumentException>(() => context.Princess.MakeChoice());

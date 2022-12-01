@@ -9,7 +9,7 @@ public class HallTest
     {
         var hall = new Hall();
         var (first, second) = TestsHelper.GetTwoRandomContenders(40, 60);
-        hall.InviteContenders(new List<RatingContender>
+        hall.InviteContenders(new List<Contender>
         {
             first,
             second
@@ -28,7 +28,7 @@ public class HallTest
     public void ExceptionWhileGetNonexistentTest()
     {
         var hall = new Hall();
-        hall.InviteContenders(new List<RatingContender>());
+        hall.InviteContenders(new List<Contender>());
         Assert.Throws<InvalidOperationException>(() => hall.GetNextContender());
     }
 }

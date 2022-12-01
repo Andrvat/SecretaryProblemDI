@@ -15,6 +15,7 @@ public static class Program
         return Host.CreateDefaultBuilder(args).ConfigureServices((_, services) =>
         {
             services.AddHostedService<TaskSimulator>();
+            services.AddDbContext<AttemptsDbContext>();
             services.AddScoped<ContendersGenerator>();
             services.AddScoped<TaskContext>();
             services.AddScoped<Princess>();

@@ -1,6 +1,8 @@
-﻿namespace SecretaryProblemDI;
+﻿using SecretaryProblemDI.Generators;
 
-public class ContendersGenerator
+namespace SecretaryProblemDI;
+
+public class ContendersGenerator : IGenerator
 {
     private const char CsvSeparator = ';';
     private const int HeaderRowsNumber = 1;
@@ -29,7 +31,7 @@ public class ContendersGenerator
         return contenders.OrderBy(contender => random.Next()).ToList();
     }
 
-    public virtual List<RatingContender> GetContenders()
+    public List<Contender> GetContenders()
     {
         var contenders = new List<RatingContender>();
         foreach (var row in GetDataFromFile())
@@ -41,6 +43,6 @@ public class ContendersGenerator
                 rating: int.Parse(row[3])));
         }
 
-        return ShuffleContenders(contenders);
+        return new List<Contender>(ShuffleContenders(contenders));
     }
 }
