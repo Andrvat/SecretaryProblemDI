@@ -2,5 +2,7 @@
 
 public interface IGenerator
 {
-    public List<Contender> GetContenders();
+    public List<Contender>? GetContenders();
+    
+    public void CreateContenders();
 }

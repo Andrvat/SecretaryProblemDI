@@ -2,14 +2,16 @@
 
 namespace SecretaryProblemDI;
 
-public class ContendersGenerator : IGenerator
+public class ContendersFileGenerator : IGenerator
 {
     private const char CsvSeparator = ';';
     private const int HeaderRowsNumber = 1;
 
     private readonly string _sourceFilePath;
 
-    public ContendersGenerator(string sourceFilePath = "data/RussianNames.txt")
+    private List<Contender>? _generatedContenders = null;
+
+    public ContendersFileGenerator(string sourceFilePath = "data/RussianNames.txt")
     {
         _sourceFilePath = sourceFilePath ?? throw new ArgumentNullException(nameof(sourceFilePath));
         if (!File.Exists(_sourceFilePath))
@@ -31,7 +33,12 @@ public class ContendersGenerator : IGenerator
         return contenders.OrderBy(contender => random.Next()).ToList();
     }
 
-    public List<Contender> GetContenders()
+    public List<Contender>? GetContenders()
+    {
+        return _generatedContenders;
+    }
+
+    public void CreateContenders()
     {
         var contenders = new List<RatingContender>();
         foreach (var row in GetDataFromFile())
@@ -43,6 +50,6 @@ public class ContendersGenerator : IGenerator
                 rating: int.Parse(row[3])));
         }
 
-        return new List<Contender>(ShuffleContenders(contenders));
+        _generatedContenders = new List<Contender>(ShuffleContenders(contenders));
     }
 }

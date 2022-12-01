@@ -8,7 +8,9 @@ public class ContenderGeneratorTest
     [Fact]
     public void ContendersUniqueSetTest()
     {
-        var contenders = new ContendersGenerator().GetContenders();
+        var generator = new ContendersFileGenerator();
+        generator.CreateContenders();
+        var contenders = generator.GetContenders();
         Assert.Equal(TestsHelper.ContendersNumber, contenders.Count);
 
         var contendersSet = new HashSet<Contender>();

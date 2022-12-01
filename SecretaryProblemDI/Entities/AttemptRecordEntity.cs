@@ -11,7 +11,7 @@ public class AttemptRecordEntity
 
     public int AttemptNumber { get; set; }
 
-    public int SequenceNumber { get; set; }
+    // public int SequenceNumber { get; set; }
 
     public RatingContenderEntity? ContenderEntity { get; set; }
 }
