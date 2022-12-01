@@ -20,6 +20,7 @@ public static class Program
             services.AddDbContext<AttemptsDbContext>();
             services.AddSingleton<IGenerator, ContendersDbGenerator>();
             services.AddScoped<IGenerator, ContendersFileGenerator>();
+            services.AddScoped<AttemptsDbConfigurator>();
             services.AddScoped<TaskContext>();
             services.AddScoped<Princess>();
             services.AddScoped<Hall>();

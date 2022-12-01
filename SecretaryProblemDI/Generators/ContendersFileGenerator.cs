@@ -9,7 +9,7 @@ public class ContendersFileGenerator : IGenerator
 
     private readonly string _sourceFilePath;
 
-    private List<Contender>? _generatedContenders = null;
+    private List<Contender>? _generatedContenders;
 
     public ContendersFileGenerator(string sourceFilePath = "data/RussianNames.txt")
     {

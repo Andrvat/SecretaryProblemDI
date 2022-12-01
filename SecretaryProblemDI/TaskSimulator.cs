@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Hosting;
+using SecretaryProblemDI.Generators;
 
 namespace SecretaryProblemDI;
 
@@ -10,11 +12,18 @@ public class TaskSimulator : IHostedService
 
     private readonly TaskContext _context;
 
-    private readonly ContendersFileGenerator _fileGenerator;
+    private readonly ContendersDbGenerator _generator;
 
-    public TaskSimulator(ContendersFileGenerator fileGenerator, TaskContext context, IHostApplicationLifetime applicationLifetime)
+    private readonly CliArgumentsParser _cliArguments;
+
+    private readonly AttemptsDbConfigurator _configurator;
+
+    public TaskSimulator(AttemptsDbConfigurator configurator, CliArgumentsParser cliArguments,
+        ContendersDbGenerator generator, TaskContext context, IHostApplicationLifetime applicationLifetime)
     {
-        _fileGenerator = fileGenerator;
+        _generator = generator;
+        _cliArguments = cliArguments;
+        _configurator = configurator;
         _applicationLifetime = applicationLifetime;
         _context = context;
         _makeChoiceTask = new Task(Simulate);
@@ -24,12 +33,15 @@ public class TaskSimulator : IHostedService
     {
         try
         {
-            _fileGenerator.CreateContenders();
-            _context.Hall.InviteContenders(_fileGenerator.GetContenders());
-            var princessChoice = _context.Princess.MakeChoice();
+            _configurator.ConfigureAttempts();
+
+            var happiness = _cliArguments.AttemptNumber switch
+            {
+                null => GetAverageHappiness(),
+                _ => GetHappinessByAttempt()
+            };
             Console.WriteLine("_____");
-            var princessHappiness = HappinessEstimator.EstimatePrincessHappiness(princessChoice);
-            Console.WriteLine(princessHappiness);
+            Console.WriteLine(happiness);
         }
         catch (Exception e)
         {
@@ -40,6 +52,26 @@ public class TaskSimulator : IHostedService
         {
             _applicationLifetime.StopApplication();
         }
+    }
+
+    private double GetAverageHappiness()
+    {
+        var attemptsNumber = AttemptsDbConfigurator.AttemptsNumber;
+        double averageHappiness = 0;
+        for (var i = 0; i < attemptsNumber; ++i)
+        {
+            averageHappiness += GetHappinessByAttempt();
+        }
+
+        return averageHappiness / attemptsNumber;
+    }
+
+    private double GetHappinessByAttempt()
+    {
+        _generator.CreateContenders();
+        _context.Hall.InviteContenders(_generator.GetContenders());
+        var princessChoice = _context.Princess.MakeChoice();
+        return HappinessEstimator.EstimatePrincessHappiness(princessChoice);
     }
 
     public Task StartAsync(CancellationToken cancellationToken)

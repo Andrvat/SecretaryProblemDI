@@ -5,14 +5,14 @@ namespace SecretaryProblemDI;
 
 public class AttemptsDbConfigurator
 {
-    private const int ContendersNumber = 100;
-    private const int AttemptsNumber = 100;
+    public const int AttemptsNumber = 100;
+    public const int ContendersNumber = 100;
     private const int AttemptRecordsNumber = ContendersNumber * AttemptsNumber;
 
     private AttemptsDbContext _context;
-    private ContendersDbGenerator _generator;
+    private ContendersFileGenerator _generator;
 
-    public AttemptsDbConfigurator(AttemptsDbContext context, ContendersDbGenerator generator)
+    public AttemptsDbConfigurator(AttemptsDbContext context, ContendersFileGenerator generator)
     {
         _context = context;
         _generator = generator;
