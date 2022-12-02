@@ -39,6 +39,11 @@ public class Princess
         SkipForeverByFactor(_context.Hall, _context.Friend);
         while (_context.Hall.GetQueueCount() > 0)
         {
+            // if (_context.Hall.GetQueueCount() < 53)
+            // {
+            //     return null;
+            // }
+            
             var contender = _context.Hall.GetNextContender();
             var contendersCounter = 0;
             foreach (var visitedContender in _visitedContenders)

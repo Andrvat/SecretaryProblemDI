@@ -51,7 +51,6 @@ public class AttemptsDbConfigurator
                 _context.AttemptRecordEntities.Add(new AttemptRecordEntity
                 {
                     AttemptNumber = attempt,
-                    // SequenceNumber = num,
                     ContenderEntity = ratingContenderEntity
                 });
             }
